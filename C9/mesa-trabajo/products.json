@@ -1,0 +1,56 @@
+[
+    {
+        "id": "1",
+        "name": "AdiZero",
+        "price": 90000.00,
+        "stock": 27,
+        "code": "123A",
+        "published": true,
+        "creationDate": "2023-11-02"
+    },
+    {
+        "id": "2",
+        "name": "Nike Air Max",
+        "price": 120000.00,
+        "stock": 15,
+        "code": "456B",
+        "published": true,
+        "creationDate": "2023-11-03"
+    },
+    {
+        "id": "3",
+        "name": "Puma Ignite",
+        "price": 80000.00,
+        "stock": 20,
+        "code": "789C",
+        "published": false,
+        "creationDate": "2023-11-04"
+    },
+    {
+        "id": "4",
+        "name": "Reebok Classic",
+        "price": 95000.00,
+        "stock": 10,
+        "code": "012D",
+        "published": true,
+        "creationDate": "2023-11-05"
+    },
+    {
+        "id": "5",
+        "name": "New Balance 574",
+        "price": 110000.00,
+        "stock": 18,
+        "code": "345E",
+        "published": false,
+        "creationDate": "2023-11-06"
+    },
+    {
+        "id": "6",
+        "name": "Converse Chuck Taylor",
+        "price": 75000.00,
+        "stock": 25,
+        "code": "678F",
+        "published": true,
+        "creationDate": "2023-11-07"
+    }
+]
