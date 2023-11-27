@@ -4,15 +4,22 @@ import (
 	"log"
 	"time"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	handlerPing "github.com/marugervasoni/eb3-go-web-server/cmd/server/handler/ping"
+	handlerProduct "github.com/marugervasoni/eb3-go-web-server/cmd/server/handler/products"
 	"github.com/marugervasoni/eb3-go-web-server/internal/domain"
 	"github.com/marugervasoni/eb3-go-web-server/internal/products"
-	handlerProduct "github.com/marugervasoni/eb3-go-web-server/cmd/server/handler/products"
-	handlerPing "github.com/marugervasoni/eb3-go-web-server/cmd/server/handler/ping"
 )
 
 func main() {
 
-	//implementamos repository
+	//Cargar las variables de entorno
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//Carga la bd en memoria
 	db := LoadStore()
 
 	//Ping.

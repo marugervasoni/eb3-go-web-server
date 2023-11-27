@@ -3,6 +3,8 @@ package products
 import (
 	"context"
 	"net/http"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/marugervasoni/eb3-go-web-server/internal/domain"
 	"github.com/marugervasoni/eb3-go-web-server/internal/products"
@@ -19,6 +21,17 @@ func NewControllerProducts(service products.Service) *Controller{
 
 func (c *Controller) HandlerGetAll() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
+
+		//validamos token (Implementar manualmente en todas las funciones por el momento)
+		tokenHeader := ctx.GetHeader("tokenPostman")
+		tokenEnv := os.Getenv("TOKEN")
+
+		if tokenHeader == "" || tokenHeader != tokenEnv {
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"message": "invalid token",
+			})
+			return
+		}
 
 		//ejemplo de implementación de AddValueToContext (y en repository [GetAll])
 		newContext := addValueToContext(ctx)
@@ -39,6 +52,17 @@ func (c *Controller) HandlerGetAll() gin.HandlerFunc{
 func (c *Controller) HandlerGetByID() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 
+		//validate token
+		tokenHeader := ctx.GetHeader("tokenPostman")
+		tokenEnv := os.Getenv("TOKEN")
+
+		if tokenHeader == "" || tokenHeader != tokenEnv {
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"message": "invalid token",
+			})
+			return
+		}
+
 		//recuperamos el id de la request
 		idParam := ctx.Param("id")
 
@@ -58,6 +82,17 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc{
 
 func (c *Controller) HandlerUpdate() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
+
+		//validate token
+		tokenHeader := ctx.GetHeader("tokenPostman")
+		tokenEnv := os.Getenv("TOKEN")
+
+		if tokenHeader == "" || tokenHeader != tokenEnv {
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"message": "invalid token",
+			})
+			return
+		}
 
 		//recuperamos el id de la request
 		idParam := ctx.Param("id")
