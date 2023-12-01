@@ -13,12 +13,6 @@ var (
 	ErrNotFound = errors.New("products not found")
 )
 
-type Repository interface {
-	GetAll(ctx context.Context) ([]domain.Product, error)
-	GetByID(ctx context.Context, id string) (domain.Product, error)
-	Update(ctx context.Context, product domain.Product, id string) (domain.Product, error)
-}
-
 type repository struct {
 	db []domain.Product
 }

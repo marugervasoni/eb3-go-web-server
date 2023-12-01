@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"time"
 
@@ -11,6 +13,9 @@ import (
 	"github.com/marugervasoni/eb3-go-web-server/internal/domain"
 	"github.com/marugervasoni/eb3-go-web-server/internal/products"
 	"github.com/marugervasoni/eb3-go-web-server/pkg/middleware"
+
+	//importamos driver mysql
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -22,14 +27,20 @@ func main() {
 	}
 
 	//Carga la bd en memoria
-	db := LoadStore()
+	// db := LoadStore()
+	db := connectDB()
 
 	//Ping.
 	controllerPing := handlerPing.NewControllerPing()
 
 	//Products.
-	repository := products.NewMemoryRepository(db)
-	service := products.NewServiceProduct(repository)
+	// repository := products.NewMemoryRepository(db)
+	// service := products.NewServiceProduct(repository)
+	// controllerProduct := handlerProduct.NewControllerProducts(service)
+
+	//escalamos repository
+	repositoryMySql := products.NewMysqlRepository(db)
+	service := products.NewServiceProduct(repositoryMySql)
 	controllerProduct := handlerProduct.NewControllerProducts(service)
 
 	//engine := gin.Default()
@@ -95,4 +106,31 @@ func LoadStore() []domain.Product {
 			Price:       5.5,
 		},		
 	}
+}
+
+func connectDB() sql.DB {
+	var dbUsername, dbPassword, dbHost, dbPort, dbName string
+	//hacer esto por env la prox
+	dbUsername = "root"
+	dbPassword = "root"
+	dbHost = "localhost"
+	dbPort = "3306"
+	dbName = "storage"
+
+	//string de conexion
+	//"username:password@tcp(host:puerto)/base_datos"
+	//parsetime para que se interpreten las fechas correctamente
+	datasource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUsername,dbPassword,dbHost,dbPort,dbName)
+
+	db, err := sql.Open("mysql", datasource)
+	if err != nil {
+		panic(err)
+	}
+
+	if err := db.Ping(); err != nil {
+		panic(err)
+	}
+
+	return db
+
 }
